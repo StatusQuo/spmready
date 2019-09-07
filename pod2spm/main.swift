@@ -116,7 +116,7 @@ func isSpmReady(pod: Pod) -> Bool {
 }
 
 // Set the file path
-let path = "/Users/humann/git/satellite-app-ios/Podfile"
+let path = ""
 
 let pods = fetchPods(path)
 
