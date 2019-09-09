@@ -1,5 +1,7 @@
 # spmready
-small tool to check if all your pods are ready to migrate to swift package manager
+is a small tool to check if all your pods are ready to migrate to swift package manager
+
+## In your Project Directory:
 
 ## Download newest script version
 
@@ -10,3 +12,8 @@ small tool to check if all your pods are ready to migrate to swift package manag
 
 ## Run & Hope for the best
 `./spmready.swift`
+
+
+### Alternative 
+
+`./spmready.swift {PATH_TO_PODFILE}`
