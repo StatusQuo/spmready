@@ -176,7 +176,7 @@ if ready == pods.count {
     print("🎊 you are ready for Swift Package Manager")
 } else {
     print("Sorry 😢 - ✅ \(ready) | ❌ \(notReady)")
-    print("Help to improve SPM capablility by opening an issue or contribute via PR")
+    print("Help to improve SPM capablility by opening an issue or contribute via a Pullrequest")
 }
 
 
