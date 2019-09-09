@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7F5D46E32322F85B0080ADDA /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5D46E22322F85B0080ADDA /* main.swift */; };
+		7F43A1AE2326E83F00061123 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F43A1AD2326E83F00061123 /* main.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,9 +23,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7F43A1AD2326E83F00061123 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		7F5D46DF2322F85B0080ADDA /* spmready */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = spmready; sourceTree = BUILT_PRODUCTS_DIR; };
-		7F5D46E22322F85B0080ADDA /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		7F5D46EC2322FCE20080ADDA /* pod2spm.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = pod2spm.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,7 +41,7 @@
 		7F5D46D62322F85B0080ADDA = {
 			isa = PBXGroup;
 			children = (
-				7F5D46E12322F85B0080ADDA /* pod2spm */,
+				7F43A1AD2326E83F00061123 /* main.swift */,
 				7F5D46E02322F85B0080ADDA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -53,15 +52,6 @@
 				7F5D46DF2322F85B0080ADDA /* spmready */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		7F5D46E12322F85B0080ADDA /* pod2spm */ = {
-			isa = PBXGroup;
-			children = (
-				7F5D46EC2322FCE20080ADDA /* pod2spm.entitlements */,
-				7F5D46E22322F85B0080ADDA /* main.swift */,
-			);
-			path = pod2spm;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -126,7 +116,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7F5D46E32322F85B0080ADDA /* main.swift in Sources */,
+				7F43A1AE2326E83F00061123 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,7 +239,7 @@
 		7F5D46E72322F85B0080ADDA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = pod2spm/pod2spm.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YL7FVRB37Y;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -261,7 +251,7 @@
 		7F5D46E82322F85B0080ADDA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = pod2spm/pod2spm.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YL7FVRB37Y;
 				ENABLE_HARDENED_RUNTIME = YES;
