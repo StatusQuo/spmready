@@ -3,12 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		7F5D46E32322F85B0080ADDA /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5D46E22322F85B0080ADDA /* main.swift */; };
-		7F5D46EF2322FF650080ADDA /* SwiftShell in Frameworks */ = {isa = PBXBuildFile; productRef = 7F5D46EE2322FF650080ADDA /* SwiftShell */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,7 +33,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7F5D46EF2322FF650080ADDA /* SwiftShell in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,7 +81,6 @@
 			);
 			name = spmready;
 			packageProductDependencies = (
-				7F5D46EE2322FF650080ADDA /* SwiftShell */,
 			);
 			productName = pod2spm;
 			productReference = 7F5D46DF2322F85B0080ADDA /* spmready */;
@@ -114,7 +111,6 @@
 			);
 			mainGroup = 7F5D46D62322F85B0080ADDA;
 			packageReferences = (
-				7F5D46ED2322FF650080ADDA /* XCRemoteSwiftPackageReference "SwiftShell" */,
 			);
 			productRefGroup = 7F5D46E02322F85B0080ADDA /* Products */;
 			projectDirPath = "";
@@ -296,25 +292,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		7F5D46ED2322FF650080ADDA /* XCRemoteSwiftPackageReference "SwiftShell" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kareman/SwiftShell.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		7F5D46EE2322FF650080ADDA /* SwiftShell */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7F5D46ED2322FF650080ADDA /* XCRemoteSwiftPackageReference "SwiftShell" */;
-			productName = SwiftShell;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7F5D46D72322F85B0080ADDA /* Project object */;
 }

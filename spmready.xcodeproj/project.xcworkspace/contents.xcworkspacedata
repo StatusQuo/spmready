@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:/Users/humann/Developer/SwiftPackages/pod2spm/spmready.xcodeproj">
+      location = "self:">
    </FileRef>
 </Workspace>

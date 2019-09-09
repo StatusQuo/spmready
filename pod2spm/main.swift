@@ -1,13 +1,6 @@
-//
-//  main.swift
-//  pod2spm
-//
-//  Created by Sebastian Humann on 06.09.19.
-//  Copyright © 2019 sipgate GmbH. All rights reserved.
-//
+#!/usr/bin/swift
 
 import Foundation
-import SwiftShell
 
 class Pod {
     init(name: String) {
@@ -50,20 +43,7 @@ extension NSRegularExpression {
     }
 }
 
-func fetchRepo(podName: String) -> String? {
-    let date = run("/usr/local/bin/pod", "search", podName).stdout
-    let lines = date.split(separator: "\n")
-    for line in lines {
-        let regex = NSRegularExpression("Source:(.*)")
-        if  let match = regex.matches(String(line)), let repoRange = Range(match.range(at: 1), in: line) {
-            let repoUrl = line[repoRange].trimmingCharacters(in: .whitespacesAndNewlines)
-            return repoUrl
-        }
-    }
-    return nil
-}
-
-func fetchPods(_ path: String) -> [Pod] {
+func fetchPods(_ path: String) -> [Pod]? {
     var pods:[Pod] = []
     do {
         // Get the contents
@@ -80,20 +60,48 @@ func fetchPods(_ path: String) -> [Pod] {
         }
         //sprint(contents)
     }
-    catch let error as NSError {
-        print("Ooops! Something went wrong: \(error)")
+    catch {
+        print("Failed to open Podfile at \(path)")
+        print("make sure the file exists")
+        return nil
     }
     return pods
 
 }
+
+func fetchUrl(pod: String) -> String {
+
+    let semaphore = DispatchSemaphore(value: 0)
+
+    let path = "https://cocoapods.org/pods/\(pod)"
+
+    var result = ""
+
+    guard let url = URL(string: path) else {
+        return ""
+    }
+
+    let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+        if let data = data {
+            result = String(data: data, encoding: .utf8) ?? ""
+        }
+
+        semaphore.signal()
+    }
+
+    task.resume()
+
+    _ = semaphore.wait(timeout: .distantFuture)
+    return result
+}
+
 
 func isSpmReady(pod: Pod) -> Bool {
     guard let repo = pod.repo else {
         return false
     }
 
-    let spmUrl = repo.replacingOccurrences(of: ".git", with: "/blob/master/Package.swift")
-   // print(spmUrl)
+    let spmUrl = repo.replacingOccurrences(of: ".git", with: "") + "/blob/master/Package.swift"
 
     var result = false
     let semaphore = DispatchSemaphore(value: 0)
@@ -115,15 +123,44 @@ func isSpmReady(pod: Pod) -> Bool {
     return result
 }
 
+func fetchRepoOnline(podName: String) -> String? {
+    let page = fetchUrl(pod: podName)
+
+    let regex = NSRegularExpression("(((https?):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\.&]*))\">GitHub Repo</a>")
+
+    if  let match = regex.matches(String(page)) {
+        if let podNameRange = Range(match.range(at: 1), in: page) {
+            let repo = page[podNameRange]
+            return String(repo)
+        }
+    }
+
+    return nil
+}
+
+
+let path: String
+
+if CommandLine.arguments.count == 2 {
+    path = CommandLine.arguments[1]
+} else {
+    let arg = CommandLine.arguments.first!
+
+    path = arg.prefix(upTo: arg.lastIndex(of: "/")!) + "/Podfile"
+}
+
+
 // Set the file path
-let path = ""
 
-let pods = fetchPods(path)
 
-print("Found \(pods.count) Pods")
+guard let pods = fetchPods(path) else {
+    exit(1)
+}
+
+print("Found \(pods.count) pod")
 
 for pod in pods {
-    if let url = fetchRepo(podName: pod.name) {
+    if let url = fetchRepoOnline(podName: pod.name) {
         pod.repo = url
         if isSpmReady(pod: pod) {
             pod.spmready = true
@@ -135,16 +172,12 @@ for pod in pods {
 let ready = pods.filter { $0.spmready }.count
 let notReady = pods.filter { !$0.spmready }.count
 
-if ready == notReady {
+if ready == pods.count {
     print("🎊 you are ready for Swift Package Manager")
 } else {
     print("Sorry 😢 - ✅ \(ready) | ❌ \(notReady)")
     print("Help to improve SPM capablility by opening an issue or contribute via PR")
 }
-
-//for pod in pods {
-//    print(pod.format())
-//}
 
 
 
