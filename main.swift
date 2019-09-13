@@ -51,14 +51,13 @@ func fetchPods(_ path: String) -> [Pod]? {
         let lines = contents.split(separator: "\n")
         for line in lines {
             let regex = NSRegularExpression("pod '([A-Za-z0-9-]*)'")
-
-            if  let match = regex.matches(String(line)), let podNameRange = Range(match.range(at: 1), in: line) {
+            let podLine = String(line)
+            if  let match = regex.matches(podLine), let podNameRange = Range(match.range(at: 1), in: podLine) {
                 let podName = line[podNameRange]
                 pods.append(Pod(name: String(podName)))
 
             }
         }
-        //sprint(contents)
     }
     catch {
         print("Failed to open Podfile at \(path)")
