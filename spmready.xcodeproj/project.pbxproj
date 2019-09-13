@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		7F43A1AE2326E83F00061123 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F43A1AD2326E83F00061123 /* main.swift */; };
+		7F7BEF41232C2C5B001781BB /* spmreadytest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7BEF40232C2C5B001781BB /* spmreadytest.swift */; };
+		7F7BEF46232C2E4F001781BB /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F43A1AD2326E83F00061123 /* main.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,10 +27,20 @@
 /* Begin PBXFileReference section */
 		7F43A1AD2326E83F00061123 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		7F5D46DF2322F85B0080ADDA /* spmready */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = spmready; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F7BEF3E232C2C5B001781BB /* spmreadytest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = spmreadytest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F7BEF40232C2C5B001781BB /* spmreadytest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = spmreadytest.swift; sourceTree = "<group>"; };
+		7F7BEF42232C2C5B001781BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		7F5D46DC2322F85B0080ADDA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7F7BEF3B232C2C5B001781BB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -42,6 +54,7 @@
 			isa = PBXGroup;
 			children = (
 				7F43A1AD2326E83F00061123 /* main.swift */,
+				7F7BEF3F232C2C5B001781BB /* spmreadytest */,
 				7F5D46E02322F85B0080ADDA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -50,8 +63,18 @@
 			isa = PBXGroup;
 			children = (
 				7F5D46DF2322F85B0080ADDA /* spmready */,
+				7F7BEF3E232C2C5B001781BB /* spmreadytest.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		7F7BEF3F232C2C5B001781BB /* spmreadytest */ = {
+			isa = PBXGroup;
+			children = (
+				7F7BEF40232C2C5B001781BB /* spmreadytest.swift */,
+				7F7BEF42232C2C5B001781BB /* Info.plist */,
+			);
+			path = spmreadytest;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -76,6 +99,23 @@
 			productReference = 7F5D46DF2322F85B0080ADDA /* spmready */;
 			productType = "com.apple.product-type.tool";
 		};
+		7F7BEF3D232C2C5B001781BB /* spmreadytest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7F7BEF43232C2C5B001781BB /* Build configuration list for PBXNativeTarget "spmreadytest" */;
+			buildPhases = (
+				7F7BEF3A232C2C5B001781BB /* Sources */,
+				7F7BEF3B232C2C5B001781BB /* Frameworks */,
+				7F7BEF3C232C2C5B001781BB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = spmreadytest;
+			productName = spmreadytest;
+			productReference = 7F7BEF3E232C2C5B001781BB /* spmreadytest.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -87,6 +127,9 @@
 				ORGANIZATIONNAME = "sipgate GmbH";
 				TargetAttributes = {
 					7F5D46DE2322F85B0080ADDA = {
+						CreatedOnToolsVersion = 11.0;
+					};
+					7F7BEF3D232C2C5B001781BB = {
 						CreatedOnToolsVersion = 11.0;
 					};
 				};
@@ -107,9 +150,20 @@
 			projectRoot = "";
 			targets = (
 				7F5D46DE2322F85B0080ADDA /* spmready */,
+				7F7BEF3D232C2C5B001781BB /* spmreadytest */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7F7BEF3C232C2C5B001781BB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		7F5D46DB2322F85B0080ADDA /* Sources */ = {
@@ -117,6 +171,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				7F43A1AE2326E83F00061123 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7F7BEF3A232C2C5B001781BB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F7BEF46232C2E4F001781BB /* main.swift in Sources */,
+				7F7BEF41232C2C5B001781BB /* spmreadytest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,6 +323,42 @@
 			};
 			name = Release;
 		};
+		7F7BEF44232C2C5B001781BB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = YL7FVRB37Y;
+				INFOPLIST_FILE = spmreadytest/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.humi.spmreadytest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		7F7BEF45232C2C5B001781BB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = YL7FVRB37Y;
+				INFOPLIST_FILE = spmreadytest/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.humi.spmreadytest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -277,6 +376,15 @@
 			buildConfigurations = (
 				7F5D46E72322F85B0080ADDA /* Debug */,
 				7F5D46E82322F85B0080ADDA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7F7BEF43232C2C5B001781BB /* Build configuration list for PBXNativeTarget "spmreadytest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7F7BEF44232C2C5B001781BB /* Debug */,
+				7F7BEF45232C2C5B001781BB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
