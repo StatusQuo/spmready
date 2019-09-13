@@ -24,7 +24,7 @@ class spmreadytest: XCTestCase {
         XCTAssertEqual(name, "Name")
     }
 
-    func testDubbleQuotePod() {
+    func testDoubleQuotePod() {
         let name = findPodName(#"  pod "Name", "~> 16.0.1""#)
         XCTAssertEqual(name, "Name")
     }
