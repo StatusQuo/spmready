@@ -22,7 +22,7 @@ extension Pod {
     }
 
     func format() -> String {
-        "\(self.readyOrNot()) | \(self.name) : \(self.repo ?? "not found")"
+        return "\(self.readyOrNot()) | \(self.name) : \(self.repo ?? "not found")"
     }
 }
 
@@ -51,11 +51,11 @@ func fetchPods(_ path: String) -> [Pod]? {
         let lines = contents.split(separator: "\n")
         for line in lines {
             let regex = NSRegularExpression("pod '([A-Za-z0-9-]*)'")
-            let podLine = String(line)
-            if  let match = regex.matches(podLine), let podNameRange = Range(match.range(at: 1), in: podLine) {
-                let podName = line[podNameRange]
-                pods.append(Pod(name: String(podName)))
+            let lineString = String(line)
 
+            if  let match = regex.matches(lineString), let podNameRange = Range(match.range(at: 1), in: lineString) {
+                let podName = lineString[podNameRange]
+                pods.append(Pod(name: String(podName)))
             }
         }
     }
