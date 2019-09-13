@@ -21,7 +21,7 @@ is a small tool to check if all your pods are ready to migrate to swift package 
 # Background
 
 This script scans all pods in your podfile and checks if the Repository (master) on github has a SwiftPackage.swift file.
-This is not a garantee that this pod works with spm on your platform/maschine/etc. but it can give you a first impression, how far away you are from mirgating to Swift Package Manager.
+This is not a guarantee that this pod works with spm on your platform/machine/etc. but it can give you a first impression, how far away you are from migrating to Swift Package Manager.
 
 https://swift.org/package-manager/
 
