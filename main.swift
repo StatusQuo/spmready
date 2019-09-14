@@ -6,11 +6,11 @@ class Pod {
     init(name: String) {
         self.name = name
     }
-    
+
     let name: String
     var repo: String?
     var spmready: Bool = false
-    
+
 }
 
 extension Pod {
@@ -20,7 +20,7 @@ extension Pod {
         }
         return "❌"
     }
-    
+
     func format() -> String {
         return "\(self.readyOrNot()) | \(self.name) : \(self.repo ?? "not found")"
     }
@@ -70,31 +70,31 @@ func fetchPods(_ path: String) -> [Pod]? {
         return nil
     }
     return pods
-    
+
 }
 
 func fetchUrl(pod: String) -> String {
-    
+
     let semaphore = DispatchSemaphore(value: 0)
-    
+
     let path = "https://cocoapods.org/pods/\(pod)"
-    
+
     var result = ""
-    
+
     guard let url = URL(string: path) else {
         return ""
     }
-    
+
     let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
         if let data = data {
             result = String(data: data, encoding: .utf8) ?? ""
         }
-        
+
         semaphore.signal()
     }
-    
+
     task.resume()
-    
+
     _ = semaphore.wait(timeout: .distantFuture)
     return result
 }
@@ -104,41 +104,41 @@ func isSpmReady(pod: Pod) -> Bool {
     guard let repo = pod.repo else {
         return false
     }
-    
+
     let spmUrl = repo.replacingOccurrences(of: ".git", with: "") + "/blob/master/Package.swift"
-    
+
     var result = false
     let semaphore = DispatchSemaphore(value: 0)
     let url = URL(string: spmUrl)!
-    
+
     let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
         if let httpResponse = response as? HTTPURLResponse {
             if httpResponse.statusCode == 200 {
                 result = true
             }
         }
-        
+
         semaphore.signal()
     }
-    
+
     task.resume()
-    
+
     _ = semaphore.wait(timeout: .distantFuture)
     return result
 }
 
 func fetchRepoOnline(podName: String) -> String? {
     let page = fetchUrl(pod: podName)
-    
+
     let regex = NSRegularExpression("(((https?):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\.&]*))\">GitHub Repo</a>")
-    
+
     if  let match = regex.matches(String(page)) {
         if let podNameRange = Range(match.range(at: 1), in: page) {
             let repo = page[podNameRange]
             return String(repo)
         }
     }
-    
+
     return nil
 }
 
@@ -149,7 +149,7 @@ if CommandLine.arguments.count == 2 {
     path = CommandLine.arguments[1]
 } else {
     let arg = CommandLine.arguments.first!
-    
+
     path = arg.prefix(upTo: arg.lastIndex(of: "/")!) + "/Podfile"
 }
 
