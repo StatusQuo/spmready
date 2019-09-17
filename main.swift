@@ -2,7 +2,7 @@
 
 import Foundation
 
-class Pod {
+class Library {
     init(name: String) {
         self.name = name
     }
@@ -10,10 +10,9 @@ class Pod {
     let name: String
     var repo: String?
     var spmready: Bool = false
-
 }
 
-extension Pod {
+extension Library {
     func readyOrNot() -> String {
         if spmready {
             return "✅"
@@ -52,15 +51,15 @@ func findPodName(_ input: String) -> String? {
     return nil
 }
 
-func fetchPods(_ path: String) -> [Pod]? {
-    var pods:[Pod] = []
+func fetchPods(_ path: String) -> [Library]? {
+    var pods:[Library] = []
     do {
         // Get the contents
         let contents = try String(contentsOfFile: path, encoding: .utf8)
         let lines = contents.split(separator: "\n")
         for line in lines {
             if let podName = findPodName(String(line)) {
-                pods.append(Pod(name: podName))
+                pods.append(Library(name: podName))
             }
         }
     }
@@ -100,11 +99,7 @@ func fetchUrl(pod: String) -> String {
 }
 
 
-func isSpmReady(pod: Pod) -> Bool {
-    guard let repo = pod.repo else {
-        return false
-    }
-
+func isSpmReady(repo: String) -> Bool {
     let spmUrl = repo.replacingOccurrences(of: ".git", with: "") + "/blob/master/Package.swift"
 
     var result = false
@@ -149,7 +144,6 @@ if CommandLine.arguments.count == 2 {
     path = CommandLine.arguments[1]
 } else {
     let arg = CommandLine.arguments.first!
-
     path = arg.prefix(upTo: arg.lastIndex(of: "/")!) + "/Podfile"
 }
 
@@ -164,13 +158,16 @@ guard let pods = fetchPods(path) else {
 print("Found \(pods.count) pod")
 
 for pod in pods {
-    if let url = fetchRepoOnline(podName: pod.name) {
+    if pod.repo == nil, let url = fetchRepoOnline(podName: pod.name) {
         pod.repo = url
-        if isSpmReady(pod: pod) {
-            pod.spmready = true
-        }
-        print(pod.format())
     }
+
+    if let repo = pod.repo, isSpmReady(repo: repo) {
+        pod.spmready = true
+    }
+
+    print(pod.format())
+
 }
 
 let ready = pods.filter { $0.spmready }.count
