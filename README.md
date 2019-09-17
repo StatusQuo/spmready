@@ -5,7 +5,7 @@ is a small tool to check if all your pods are ready to migrate to swift package 
 
 ## Download newest script version
 
-`curl https://raw.githubusercontent.com/StatusQuo/spmready/master/spmready/main.swift -o spmready.swift`
+`curl https://raw.githubusercontent.com/StatusQuo/spmready/master/main.swift -o spmready.swift`
 
 ## Make it executable
 `chmod +x spmready.swift`
@@ -22,6 +22,8 @@ is a small tool to check if all your pods are ready to migrate to swift package 
 
 This script scans all pods in your podfile and checks if the Repository (master) on github has a SwiftPackage.swift file.
 This is not a guarantee that this pod works with spm on your platform/machine/etc. but it can give you a first impression, how far away you are from migrating to Swift Package Manager.
+
+https://medium.com/@bastihumann/ready-for-swift-package-manger-3defcca50ca3
 
 https://swift.org/package-manager/
 
