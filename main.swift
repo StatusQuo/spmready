@@ -47,6 +47,7 @@ func get(url: String) -> Result<HttpResult, HttpError> {
 // MARK: - RegexKit
 
 enum Searcher: String {
+   case cart = #"github ["']([A-Za-z0–9-]*)["']"#
    case pod = "pod [\"']([A-Za-z0–9-]*)[\"']"
    case podRepoUrl = "(((https?):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\.&]*))\">GitHub Repo</a>"
 }
@@ -90,6 +91,11 @@ func fetchPods(_ path: String) -> [Library]? {
         for line in lines {
             if let podName = line.match(.pod) {
                 pods.append(Library(name: podName))
+            }
+            if let cartLib = line.match(.cart) {
+                let lib = Library(name: cartLib)
+                lib.repo = "https://github.com/" + lib.name
+                pods.append(lib)
             }
         }
     }
@@ -146,10 +152,7 @@ class Library {
 
 extension Library {
     func readyOrNot() -> String {
-        if spmready {
-            return "✅"
-        }
-        return "❌"
+        return spmready ? "✅" : "❌"
     }
 
     func format() -> String {
@@ -166,7 +169,16 @@ if CommandLine.arguments.count == 2 {
     path = CommandLine.arguments[1]
 } else {
     let arg = CommandLine.arguments.first!
-    path = arg.prefix(upTo: arg.lastIndex(of: "/")!) + "/Podfile"
+    let workingFolder = String(arg.prefix(upTo: arg.lastIndex(of: "/")!))
+    let podPath = workingFolder + "/Podfile"
+    let cartPath = workingFolder + "/Cartfile"
+    if FileManager.default.fileExists(atPath: podPath) {
+        path = podPath
+    } else if FileManager.default.fileExists(atPath: cartPath) {
+        path = cartPath
+    } else {
+        path = ""
+    }
 }
 
 
