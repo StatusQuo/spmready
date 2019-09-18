@@ -2,28 +2,49 @@
 
 import Foundation
 
-class Library {
-    init(name: String) {
-        self.name = name
-    }
+// MARK: - NetworkKit
 
-    let name: String
-    var repo: String?
-    var spmready: Bool = false
+struct HttpResult {
+    let code: Int
+    let data: Data?
 }
 
-extension Library {
-    func readyOrNot() -> String {
-        if spmready {
-            return "✅"
+enum HttpError: Error {
+    case error
+}
+
+extension Result {
+    func take() -> Success? {
+        switch self {
+        case .success(let data):
+            return data
+        case .failure:
+            return nil
         }
-        return "❌"
-    }
-
-    func format() -> String {
-        return "\(self.readyOrNot()) | \(self.name) : \(self.repo ?? "not found")"
     }
 }
+
+func get(url: String) -> Result<HttpResult, HttpError> {
+
+    var result: Result<HttpResult, HttpError> = .failure(HttpError.error)
+    let semaphore = DispatchSemaphore(value: 0)
+    let url = URL(string: url)!
+
+    let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+        if let httpResponse = response as? HTTPURLResponse {
+            result = .success(HttpResult(code: httpResponse.statusCode, data: data))
+        }
+
+        semaphore.signal()
+    }
+
+    task.resume()
+
+    _ = semaphore.wait(timeout: .distantFuture)
+    return result
+}
+
+// MARK: - RegexKit
 
 enum Searcher: String {
    case pod = "pod [\"']([A-Za-z0–9-]*)[\"']"
@@ -57,6 +78,8 @@ extension NSRegularExpression {
         return firstMatch(in: string, options: [], range: range)
     }
 }
+
+// MARK: - Helper functions
 
 func fetchPods(_ path: String) -> [Library]? {
     var pods:[Library] = []
@@ -103,49 +126,39 @@ func hasSwiftPackageFile(repoUrl: String) -> Bool {
     return false
 }
 
-struct HttpResult {
-    let code: Int
-    let data: Data?
-}
-
-enum HttpError: Error {
-    case error
-}
-
-extension Result {
-    func take() -> Success? {
-        switch self {
-        case .success(let data):
-            return data
-        case .failure:
-            return nil
-        }
-    }
-}
-
-func get(url: String) -> Result<HttpResult, HttpError> {
-
-    var result: Result<HttpResult, HttpError> = .failure(HttpError.error)
-    let semaphore = DispatchSemaphore(value: 0)
-    let url = URL(string: url)!
-
-    let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
-        if let httpResponse = response as? HTTPURLResponse {
-            result = .success(HttpResult(code: httpResponse.statusCode, data: data))
-        }
-
-        semaphore.signal()
-    }
-
-    task.resume()
-
-    _ = semaphore.wait(timeout: .distantFuture)
-    return result
-}
 
 func fetchRepoOnline(podName: String) -> String? {
     return fetchUrl(pod: podName).match(.podRepoUrl)
 }
+
+
+// MARK: - Data model
+
+class Library {
+    init(name: String) {
+        self.name = name
+    }
+
+    let name: String
+    var repo: String?
+    var spmready: Bool = false
+}
+
+extension Library {
+    func readyOrNot() -> String {
+        if spmready {
+            return "✅"
+        }
+        return "❌"
+    }
+
+    func format() -> String {
+        return "\(self.readyOrNot()) | \(self.name) : \(self.repo ?? "not found")"
+    }
+}
+
+
+// MARK: actual script
 
 let path: String
 
@@ -158,7 +171,6 @@ if CommandLine.arguments.count == 2 {
 
 
 // Set the file path
-
 
 guard let pods = fetchPods(path) else {
     exit(1)
