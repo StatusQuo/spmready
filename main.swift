@@ -1,5 +1,8 @@
 #!/usr/bin/swift
 
+/// spmready is a small tool to check if all your dependencies (cocoapods/ carthage) are ready to migrate to swift package manager
+/// see https://github.com/StatusQuo/spmready for more information and updates
+
 import Foundation
 
 // MARK: - NetworkKit
@@ -47,7 +50,7 @@ func get(url: String) -> Result<HttpResult, HttpError> {
 // MARK: - RegexKit
 
 enum Searcher: String {
-   case cart = #"github ["']([A-Za-z0–9-]*)["']"#
+   case cart = "github [\"']([A-Za-z0–9/]*)[\"']"
    case pod = "pod [\"']([A-Za-z0–9-]*)[\"']"
    case podRepoUrl = "(((https?):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\.&]*))\">GitHub Repo</a>"
 }
@@ -188,7 +191,7 @@ guard let pods = fetchPods(path) else {
     exit(1)
 }
 
-print("Found \(pods.count) pod")
+print("Found \(pods.count) dependencies")
 
 for pod in pods {
     if pod.repo == nil, let url = fetchRepoOnline(podName: pod.name) {

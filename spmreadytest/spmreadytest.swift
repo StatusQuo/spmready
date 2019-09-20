@@ -20,18 +20,25 @@ class spmreadytest: XCTestCase {
     }
 
     func testSingleQuotePod() {
-        let name = findPodName("  pod 'Name', '~> 16.0.1'")
+        let name = "  pod 'Name', '~> 16.0.1'".match(.pod)
         XCTAssertEqual(name, "Name")
     }
 
     func testDoubleQuotePod() {
-        let name = findPodName(#"  pod "Name", "~> 16.0.1""#)
+        let name = #"  pod "Name", "~> 16.0.1""#.match(.pod)
         XCTAssertEqual(name, "Name")
     }
 
     func testPodParseSafe() {
-        let name = findPodName(#"  ajshgdjsad"#)
+        let name = #"  ajshgdjsad"#.match(.pod)
         XCTAssertEqual(name, nil)
     }
+
+    func testCartParseSafe() {
+           let name = #"         github "ReactiveCocoa/ReactiveCocoa""#.match(.cart)
+           XCTAssertEqual(name, nil)
+    }
+
+
 
 }
