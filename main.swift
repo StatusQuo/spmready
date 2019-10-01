@@ -166,50 +166,49 @@ extension Library {
 
 // MARK: actual script
 
-let path: String
+let paths: [String]
 
 if CommandLine.arguments.count == 2 {
-    path = CommandLine.arguments[1]
+    paths = [CommandLine.arguments[1]]
 } else {
     let arg = CommandLine.arguments.first!
-    let workingFolder = String(arg.prefix(upTo: arg.lastIndex(of: "/")!))
-    let podPath = workingFolder + "/Podfile"
-    let cartPath = workingFolder + "/Cartfile"
-    if FileManager.default.fileExists(atPath: podPath) {
-        path = podPath
-    } else if FileManager.default.fileExists(atPath: cartPath) {
-        path = cartPath
+    let workingFolder: String
+    if let index = arg.lastIndex(of: "/") {
+        workingFolder = String(arg.prefix(upTo: index))
     } else {
-        path = ""
+        workingFolder = "."
     }
+    paths = [workingFolder + "/Podfile", workingFolder + "/Cartfile", workingFolder + "/Cartfile.private"].compactMap({ FileManager.default.fileExists(atPath: $0) ? $0 : nil })
 }
 
 
 // Set the file path
 
-guard let pods = fetchPods(path) else {
+let libraries = paths.compactMap({ fetchPods($0) }).flatMap({ $0 })
+
+guard !libraries.isEmpty else {
     exit(1)
 }
 
-print("Found \(pods.count) dependencies")
+print("Found \(libraries.count) dependencies")
 
-for pod in pods {
-    if pod.repo == nil, let url = fetchRepoOnline(podName: pod.name) {
-        pod.repo = url
+for library in libraries {
+    if library.repo == nil, let url = fetchRepoOnline(podName: library.name) {
+        library.repo = url
     }
 
-    if let repo = pod.repo, hasSwiftPackageFile(repoUrl: repo) {
-        pod.spmready = true
+    if let repo = library.repo, hasSwiftPackageFile(repoUrl: repo) {
+        library.spmready = true
     }
 
-    print(pod.format())
+    print(library.format())
 
 }
 
-let ready = pods.filter { $0.spmready }.count
-let notReady = pods.filter { !$0.spmready }.count
+let ready = libraries.filter { $0.spmready }.count
+let notReady = libraries.filter { !$0.spmready }.count
 
-if ready == pods.count {
+if ready == libraries.count {
     print("🎊 you are ready for Swift Package Manager")
 } else {
     print("Sorry 😢 - ✅ \(ready) | ❌ \(notReady)")
