@@ -51,7 +51,7 @@ func get(url: String) -> Result<HttpResult, HttpError> {
 
 enum Searcher: String {
    case cart = "github [\"']([A-Za-z0–9/]*)[\"']"
-   case pod = "pod [\"']([A-Za-z0–9-]*)[\"']"
+   case pod = "pod [\"']([^\"']*)"
    case podRepoUrl = "(((https?):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\.&]*))\">GitHub Repo</a>"
 }
 
@@ -92,7 +92,7 @@ func fetchPods(_ path: String) -> [Library]? {
         let contents = try String(contentsOfFile: path, encoding: .utf8)
         let lines = contents.split(separator: "\n").map { String($0) }
         for line in lines {
-            if let podName = line.match(.pod) {
+            if let podName = line.match(.pod)?.components(separatedBy: "/").first {
                 pods.append(Library(name: podName))
             }
             if let cartLib = line.match(.cart) {
@@ -116,7 +116,8 @@ func fetchUrl(pod: String) -> String {
     let path = "https://cocoapods.org/pods/\(pod)"
 
     guard let data = get(url: path).take()?.data,
-        let contents = String(data: data, encoding: .utf8) else {
+        let contents = String(data: data, encoding: .utf8),
+        !contents.contains("404") else {
         return ""
     }
 
@@ -153,6 +154,17 @@ class Library {
     var spmready: Bool = false
 }
 
+extension Library: Hashable {
+
+    static func == (lhs: Library, rhs: Library) -> Bool {
+        lhs.name == rhs.name
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+    }
+}
+
 extension Library {
     func readyOrNot() -> String {
         return spmready ? "✅" : "❌"
@@ -163,6 +175,11 @@ extension Library {
     }
 }
 
+extension Array where Element: Hashable {
+    func asSet() -> Set<Element> {
+        Set(self)
+    }
+}
 
 // MARK: actual script
 
@@ -184,7 +201,11 @@ if CommandLine.arguments.count == 2 {
 
 // Set the file path
 
-let libraries = paths.compactMap({ fetchPods($0) }).flatMap({ $0 })
+let libraries = paths
+    .compactMap(fetchPods)
+    .flatMap { $0 }
+    .asSet()
+    .sorted { $0.name < $1.name }
 
 guard !libraries.isEmpty else {
     exit(1)
